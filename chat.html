@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <!-- Link para o Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-image: url("fundo.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      body.dark-mode {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      .container {
+        width: 80vw;
+        height: 80vh;
+        background-color: rgba(17, 25, 40, 0.075);
+        backdrop-filter: blur(19px) saturate(180%);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.062);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        transition: background-color 0.3s;
+      }
+
+      .container.dark-mode {
+        background-color: rgba(15, 15, 15, 0.918);
+      }
+
+      .userinfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        border-bottom: 2px solid rgba(230, 123, 176, 0.822);
+        height: 165px;
+      }
+
+      .users {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .users img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        background-color: #fcfcfc;
+        padding: 10px;
+        border-radius: 8px;
+        width: 300px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+
+      .item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .item.dark-mode {
+        background-color: rgba(7, 131, 255, 0.918);
+      }
+
+      .texts {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .texts span {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .texts p {
+        color: #000;
+      }
+
+      .chat-input {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+        margin-top: 140px;
+        gap: 10px;
+      }
+
+      .chat-input textarea {
+        width: 55%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #f17fcb;
+        resize: none;
+        font-size: 16px;
+        background-color: #f9f9f998;
+        margin-right: 5px;
+      }
+
+      .chat-input button {
+        width: 10%;
+        padding: 10px;
+        background-color: #e018ae;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background-color: #63cace;
+      }
+
+      .box-line {
+        position: fixed;
+        width: 2px;
+        height: 465px;
+        top: 70px;
+        left: 500px;
+        background: rgba(230, 123, 176, 0.822);
+      }
+
+      .box-voluntario {
+        position: absolute;
+        top: 70px;
+        right: 675px;
+        display: flex;
+        height: 60px;
+        border-radius: 62px;
+        overflow: hidden;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .box-voluntario img {
+        width: 60px;
+        height: 60px;
+        border-radius: 62px;
+        object-fit: cover;
+      }
+
+      .voluntario-texto span {
+        font-size: 16px;
+        font-weight: bold;
+        color: rgb(0, 0, 0);
+      }
+
+      .settings-button {
+        position: absolute;
+        top: 20px;
+        right: 900px;
+        width: 40px;
+        height: 40px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+        margin-top: 70px;
+      }
+
+      .settings-button:hover {
+        background-color: rgba(241, 231, 231, 0.8);
+      }
+
+      .settings-button img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .dark-mode-button {
+        position: absolute;
+        top: 80px;
+        right: 2000px;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.795);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+        margin-top: 410px;
+        gap: 8px;
+      }
+
+      .dark-mode-button:hover {
+        background-color: rgba(241, 231, 231, 0.8);
+      }
+
+      .dark-mode-button span {
+        font-size: 14px;
+        color: #000;
+        font-weight: bold;
+      }
+
+      .dark-mode-button img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .voluntario-texto span {
+        font-size: 16px;
+        font-weight: bold;
+        color: rgb(0, 0, 0);
+      }
+
+      body.dark-mode .voluntario-texto span {
+        color: #ffffff;
+      }
+
+      .item p {
+        color: #000000;
+      }
+
+      body.dark-mode .item p {
+        color: #000000;
+      }
+
+      body.dark-mode .item span {
+        color: #000000;
+      }
+
+      .back-button {
+        position: absolute;
+        top: 80px;
+        left: 950px;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .back-button i {
+        margin-right: 8px;
+      }
+
+      .back-button:hover {
+        background-color: #63cace;
+      }
+
+      .frame {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 17px 32px;
+        position: relative;
+        background-color: #0ad2d94c;
+        border-radius: 0px 41.59px 41.59px 0px;
+      }
+
+      .frame .text-wrapper {
+        position: relative;
+        width: fit-content;
+        margin-top: -0.73px;
+        font-family: "Poppins-Medium", Helvetica;
+        font-weight: 500;
+        color: #000000;
+        font-size: 28.6px;
+        letter-spacing: 0;
+        line-height: 45.3px;
+        white-space: nowrap;
+      }
+
+      box {
+        width: 263px;
+        height: 42px;
+      }
+
+      .box .rectangle {
+        position: fixed;
+        width: 263px;
+        height: 42px;
+        top: 150px;
+        left: 510px;
+        background-color: #f8f8f8a1;
+        border-radius: 10px;
+      }
+      .rectangle-text {
+        position: absolute;
+        top: 50%; /* Alinha o texto verticalmente no centro */
+        left: 50%; /* Alinha o texto horizontalmente no centro */
+        transform: translate(-50%, -50%); /* Ajusta a posição do texto exatamente no centro */
+        color: #000; /* Cor do texto */
+        font-size: 16px; /* Tamanho da fonte */
+        font-weight: bold; /* Peso da fonte */
+        text-align: center; /* Alinha o texto no centro */
+      }
+
+      box {
+        width: 263px;
+        height: 42px;
+      }
+
+      .box .rectangle {
+        position: fixed;
+        width: 230px; /* Largura ajustada */
+        height: 42px;
+        top: 150px;
+        left: 515px;
+        background-color: #e0f7fa;
+        border-radius: 20px;
+      }
+      .rectangle-text {
+        position: absolute;
+        top: 50%; /* Alinha o texto verticalmente no centro */
+        left: 36%; /* Alinha o texto horizontalmente no centro */
+        transform: translate(-40%, -50%); /* Ajusta a posição do texto exatamente no centro */
+        color: #000; /* Cor do texto */
+        font-size: 12px; /* Tamanho da fonte */
+        font-weight: bold; /* Peso da fonte */
+        text-align: center; /* Centraliza o texto horizontalmente */
+        white-space: nowrap; /* Impede que o texto quebre para a próxima linha */
+        overflow: hidden; /* Garante que o texto não ultrapasse o limite do retângulo */
+        text-overflow: ellipsis; /* Adiciona "..." caso o texto seja maior que o tamanho do retângulo */
+      }
+
+      .rectangle-second {
+        position: fixed;
+        width: 430px; /* Largura ajustada */
+        height: 42px;
+        top: 200px; /* Posição abaixo do primeiro retângulo */
+        left: 515px;
+        background-color: #e0f7fa;
+        border-radius: 20px;
+      }
+
+      .rectangle-text-second {
+        position: absolute;
+        top: 50%;
+        left: 50%; /* Centraliza o texto */
+        transform: translate(-50%, -50%);
+        color: #000;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center; /* Centraliza o texto horizontalmente */
+        white-space: nowrap; /* Impede que o texto quebre para a próxima linha */
+        overflow: hidden; /* Garante que o texto não ultrapasse o limite do retângulo */
+        text-overflow: ellipsis; /* Adiciona "..." caso o texto seja maior que o tamanho do retângulo */
+      }
+      .dark-mode-button {
+        position: absolute;
+        top: 80px;
+        right: 900px;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.795);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+        margin-top: 410px;
+        gap: 8px;
+      }
+
+      .logo-container {
+      position: absolute;
+      bottom: 80px; /* Coloca a logo na parte inferior */
+      right: 1070px; /* Alinha a logo com o botão de modo noturno */
+    }
+
+    .logo {
+      width: 180px;  /* Ajuste de tamanho conforme necessário */
+      height: 100px;
+    }
+    </style>
+  </head>
+  <body>
+    <!-- Botão de Voltar com ícone de casa -->
+    <button class="back-button" onclick="window.location.href='index.html'">
+      <i class="fas fa-home"></i> Voltar à Página Principal
+    </button>
+
+    <div class="container">
+      <div class="userinfo">
+        <div class="users">
+          <img src="./perfil.jpg" alt="Avatar do Usuário" />
+          <h2>Usuário</h2>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="./voluntario1.jpg" alt="Avatar do Voluntário" />
+        <div class="texts">
+          <span>Voluntário 1</span>
+          <p>Online</p>
+        </div>
+      </div>
+      <div class="item">
+        <img src="./voluntario2.jpg" alt="Avatar do Voluntário" />
+        <div class="texts">
+          <span>Voluntário 2</span>
+          <p>Online</p>
+        </div>
+        
+      </div>
+      <div class="chat-input">
+        <textarea placeholder="Digite sua mensagem..."></textarea>
+        <button>Enviar</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="rectangle-second">
+        <span class="rectangle-text-second">Eu sou o voluntário 1, em que posso te ajudar no dia de hoje ?</span>
+      </div>
+    </div>
+
+    <div class="box-line"></div>
+
+    <div class="box-voluntario">
+      <img src="voluntario3.png" alt="Voluntário 3" />
+      <div class="voluntario-texto">
+        <span>Voluntário 1</span>
+      </div>
+      <button class="back-button" onclick="window.location.href='http://127.0.0.1:5501/Telainicial.html'">
+        <i class="fas fa-home"></i> Voltar à Página Principal
+      </button>
+    </div>
+    <div class="box"><div class="rectangle"></div></div>
+    <div class="box">
+      <div class="rectangle">
+        <span class="rectangle-text">Olá, bem vindo ao Pause !</span>
+      </div>
+    </div>
+
+    <!-- Botão de Configurações agora redirecionando para outra página -->
+    <button class="settings-button" onclick="window.location.href='configuracoes.html'">
+      <img src="settings-icon.png" alt="Ícone de Configurações" />
+    </button>
+
+    <button class="dark-mode-button" onclick="toggleDarkMode()">
+      <img src="modo-noturno.png" alt="Ícone de Modo Noturno" />
+      <span>Modo Noturno</span>
+    </button>
+
+    <div class="logo-container">
+      <img src="./logo Pause.png" alt="Logo" class="logo" />
+    </div>
+
+    <button class="back-button" onclick="window.location.href='http://127.0.0.1:5500/Telainicial.html'">
+      <i class="fas fa-home"></i> Voltar à Página Principal
+    </button>
+
+    <script>
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        document.querySelector(".container").classList.toggle("dark-mode");
+      }
+    </script>
+  </body>
+</html>
